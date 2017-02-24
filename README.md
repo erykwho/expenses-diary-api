@@ -1,10 +1,11 @@
 #Expenses Diary API
 
-<b>Expenses Diary</b> é uma aplicação web que servirá de diário de despesas.
+Expenses Diary é uma aplicação web que servirá de diário de despesas.
 
 Nesta aplicação, você poderá:
 
 - Registrar suas despesas.
+
 
 
 	Uma despesa conterá:
@@ -25,7 +26,7 @@ Nesta aplicação, você poderá:
 
 Este repositório refere-se à API desta aplicação.
 
-Esta api se encontra na <b>versão 1.0.</b>
+Esta api se encontra na versão 1.0.
 
     Endpoints: a ser definido.
 
