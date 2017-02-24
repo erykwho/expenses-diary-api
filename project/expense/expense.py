@@ -1,5 +1,7 @@
 import flask_restful as restful
-# from project import app
+from logger.logger import new
+
+logger = new("Expense")
 
 
 class Expense(restful.Resource):
@@ -8,4 +10,5 @@ class Expense(restful.Resource):
 
     @staticmethod
     def get():
+        logger.info("GET - Expense")
         return "All Expenses", 200
