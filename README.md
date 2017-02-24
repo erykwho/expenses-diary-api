@@ -3,6 +3,7 @@
 <b>Expenses Diary</b> é uma aplicação web que servirá de diário de despesas.
 
 Nesta aplicação, você poderá:
+
 - Registrar suas despesas.
 
 
