@@ -21,6 +21,9 @@ class BaseConfig(object):
     # Http Config
     PORT = int(os.environ.get('EXD_PORT', 5000))
 
+    # Log Config
+    LOG_PATH = os.environ["EXD_LOG_PATH"]
+
 
 class TestConfig(BaseConfig):
     DEBUG = True
@@ -36,13 +39,8 @@ class ProductionConfig(BaseConfig):
     DEBUG = False
 
 
-class LogConfig(object):
-    LOG_PATH = os.environ["EXD_LOG_PATH"]
-
-
 class Config(object):
-    __metaclass__ = 'a'
-    Config = Singleton
+    __metaclass__ = Singleton
 
     def __init__(self):
 
