@@ -52,5 +52,5 @@ class Expense(restful.Resource):
             conn.close()
             return response, 200
         except Exception as error:
-            logger(error)
+            logger.info(error)
             return error, 500
