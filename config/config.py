@@ -13,10 +13,11 @@ class BaseConfig(object):
     TOKEN = os.environ["EXD_TOKEN"]
 
     # DB Config
-    HOST_SQL_SERVER = os.environ['EXD_HOST_SQL_SERVER']
-    USER_SQL_SERVER = os.environ['EXD_USER_SQL_SERVER']
-    PASS_SQL_SERVER = os.environ['EXD_PASS_SQL_SERVER']
-    PORT_SQL_SERVER = os.environ['EXD_PORT_SQL_SERVER']
+    POSTGRESQL_HOST = os.environ['EXD_POSTGRESQL_HOST']
+    POSTGRESQL_USER = os.environ['EXD_POSTGRESQL_USER']
+    POSTGRESQL_PASS = os.environ['EXD_POSTGRESQL_PASS']
+    POSTGRESQL_PORT = os.environ['EXD_POSTGRESQL_PORT']
+    POSTGRESQL_DB = os.environ['EXD_POSTGRESQL_DB']
 
     # Http Config
     PORT = int(os.environ.get('EXD_PORT', 5000))
