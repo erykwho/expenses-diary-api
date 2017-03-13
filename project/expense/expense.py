@@ -3,6 +3,7 @@ import flask_restful as restful
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar
 from logger.logger import new
+from project.returns import internal_server_error
 
 logger = new("Expense")
 
@@ -53,4 +54,4 @@ class Expense(restful.Resource):
             return response, 200
         except Exception as error:
             logger.info(error)
-            return error, 500
+            return internal_server_error.unexpected_error()

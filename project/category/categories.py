@@ -5,6 +5,7 @@ from psycopg2.extensions import AsIs
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar
 from logger.logger import new
+from project.returns import status_ok, bad_request, internal_server_error
 
 logger = new("Category")
 
@@ -52,7 +53,7 @@ class Category(restful.Resource):
             return response, 200
         except Exception as error:
             logger.error(error)
-            return error, 500
+            return internal_server_error.unexpected_error()
 
     @staticmethod
     def post(category_id=None):
@@ -79,10 +80,10 @@ class Category(restful.Resource):
             conn.commit()
             conn.close()
 
-            return "Inserido com sucexo", 200
+            return status_ok.inserted()
         except Exception as error:
             logger.error(error)
-            return "Um erro inesperado ocorreu", 500
+            return internal_server_error.unexpected_error()
 
     @staticmethod
     def patch(category_id=None):
@@ -90,10 +91,10 @@ class Category(restful.Resource):
             category_id = int(category_id)
         except ValueError as error:
             logger.error(error)
-            return "Valor inserido deve ser um inteiro", 400
+            return bad_request.must_be_integer()
         except Exception as error:
             logger.error(error)
-            return "Um erro inesperado ocorreu", 500
+            return internal_server_error.unexpected_error()
 
         try:
             query_update = '''
@@ -116,10 +117,10 @@ class Category(restful.Resource):
             conn.commit()
             conn.close()
 
-            return "Alterado com sucexo", 200
+            return status_ok.modified()
         except Exception as error:
             logger.error(error)
-            return "Um erro inesperado ocorreu", 500
+            return internal_server_error.unexpected_error()
 
     @staticmethod
     def delete(category_id=None):
@@ -127,10 +128,10 @@ class Category(restful.Resource):
             category_id = int(category_id)
         except ValueError as error:
             logger.error(error)
-            return "Valor inserido deve ser um inteiro", 400
+            return bad_request.must_be_integer()
         except Exception as error:
             logger.error(error)
-            return "Um erro inesperado ocorreu", 500
+            return internal_server_error.unexpected_error()
 
         try:
             query_update = '''
@@ -140,7 +141,6 @@ class Category(restful.Resource):
                 id = (%s);
             '''
 
-
             conn = db_conn()
             cursor = conn.cursor()
             cursor.execute(query_update, (category_id,))
@@ -149,7 +149,7 @@ class Category(restful.Resource):
             conn.commit()
             conn.close()
 
-            return "Desativado com sucesso", 200
+            return status_ok.deactivated()
         except Exception as error:
             logger.error(error)
-            return "Um erro inesperado ocorreu", 500
+            return internal_server_error.unexpected_error()
