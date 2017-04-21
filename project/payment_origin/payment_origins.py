@@ -1,12 +1,29 @@
 import flask_restful as restful
+from flask import request
 
 from database.connection import db_conn
-from database.execute import execute_to_json, execute_to_scalar
+from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.payment_origin.queries import SELECT_PAYMENT_ORIGINS, COUNT_PAYMENT_ORIGINS
+from project.payment_origin.queries import SELECT_PAYMENT_ORIGINS, COUNT_PAYMENT_ORIGINS, INSERT_PAYMENT_ORIGIN
+from project.returns import status_ok
+from project.returns.bad_request import missing_fields
+from project.returns.internal_server_error import unexpected_error
 from project.returns.not_implemented import not_implemented
+from utils.validate_body import validate_body
 
-logger = new("Category")
+logger = new("PaymentOrigin")
+
+COLUMNS = [
+    "user_id",
+    "name",
+    "description",
+    "abbreviation"
+]
+
+REQUIRED_COLUMNS = [
+    "user_id",
+    "name"
+]
 
 
 class PaymentOrigins(restful.Resource):
@@ -27,7 +44,21 @@ class PaymentOrigins(restful.Resource):
 
     @staticmethod
     def post():
-        return not_implemented()
+        try:
+            content = validate_body(request.get_json(), REQUIRED_COLUMNS, COLUMNS)
+            logger.info("Request Body: {content}".format(content=content))
+
+            conn = db_conn()
+            execute(conn, INSERT_PAYMENT_ORIGIN, content)
+            conn.close()
+
+            return status_ok.inserted()
+        except KeyError as error:
+            logger.info(error)
+            return missing_fields(error.fields)
+        except Exception as error:
+            logger.info(error)
+            return unexpected_error()
 
 
 class PaymentOrigin(restful.Resource):
