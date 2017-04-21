@@ -20,6 +20,18 @@ WHERE
   AND is_active IS true;
 """
 
+SELECT_PAYMENT_ORIGIN = """
+SELECT
+  name,
+  description,
+  abbreviation
+FROM
+  "payment_origin"
+WHERE
+  id = %s
+  AND is_active IS true;
+"""
+
 INSERT_PAYMENT_ORIGIN = """
 INSERT INTO "payment_origin" (
     user_id,

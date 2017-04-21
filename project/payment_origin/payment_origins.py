@@ -4,7 +4,8 @@ from flask import request
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.payment_origin.queries import SELECT_PAYMENT_ORIGINS, COUNT_PAYMENT_ORIGINS, INSERT_PAYMENT_ORIGIN
+from project.payment_origin.queries import SELECT_PAYMENT_ORIGINS, COUNT_PAYMENT_ORIGINS, INSERT_PAYMENT_ORIGIN, \
+    SELECT_PAYMENT_ORIGIN
 from project.returns import status_ok
 from project.returns.bad_request import missing_fields
 from project.returns.internal_server_error import unexpected_error
@@ -67,7 +68,17 @@ class PaymentOrigin(restful.Resource):
 
     @staticmethod
     def get(id=None):
-        return not_implemented()
+        try:
+            conn = db_conn()
+            response = dict()
+
+            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGIN, id)
+
+            conn.close()
+            return response, 200
+        except Exception as error:
+            logger.error(error)
+            return unexpected_error()
 
     @staticmethod
     def patch(id=None):
