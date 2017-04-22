@@ -3,11 +3,32 @@ from flask import request
 from psycopg2.extensions import AsIs
 
 from database.connection import db_conn
-from database.execute import execute_to_json, execute_to_scalar
+from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.returns import status_ok, bad_request, internal_server_error
+from project.category.queries import SELECT_CATEGORIES, COUNT_CATEGORIES, INSERT_CATEGORY, SELECT_CATEGORY, \
+    UPDATE_CATEGORY, DELETE_CATEGORY
+from project.returns import status_ok, internal_server_error
+from project.returns.bad_request import invalid_fields, missing_fields
+from project.returns.internal_server_error import unexpected_error
+from utils.validate_body import validate_body, validate_update_columns
 
 logger = new("Category")
+
+COLUMNS = [
+    "user_id",
+    "name",
+    "description"
+]
+
+REQUIRED_COLUMNS = [
+    "user_id",
+    "name"
+]
+
+UPDATEABLE_COLUMNS = [
+    "name",
+    "description"
+]
 
 
 class Categories(restful.Resource):
@@ -20,34 +41,10 @@ class Categories(restful.Resource):
         try:
             conn = db_conn()
 
-            query_count = '''
-            SELECT
-                COUNT(*)
-            FROM
-                "category"
-            WHERE
-                user_id = 1
-                AND is_active IS true;
-            '''
-
-            query_select = '''
-            SELECT
-                id,
-                name,
-                description
-            FROM
-                "category"
-            WHERE
-                user_id = 1
-                AND is_active IS true;
-            '''  # TODO: Remover user_id marretado
-
-            result = execute_to_json(conn, query_select)
-            count = execute_to_scalar(conn, query_count)
-
+            user_id = 1
             response = dict()
-            response['content'] = result
-            response['total'] = count
+            response['content'] = execute_to_json(conn, SELECT_CATEGORIES, (user_id,))
+            response['total'] = execute_to_scalar(conn, COUNT_CATEGORIES)
 
             conn.close()
             return response, 200
@@ -59,31 +56,21 @@ class Categories(restful.Resource):
     def post():
 
         try:
-            query_update = '''
-            INSERT INTO "category" (
-                user_id,
-                name,
-                description
-            ) VALUES
-              (%(user_id)s, %(name)s, %(description)s);
-            '''
 
-            content = request.get_json()
+            content = validate_body(request.get_json(), REQUIRED_COLUMNS, COLUMNS)
             logger.info("Request Body: {content}".format(content=content))
 
             conn = db_conn()
-            cursor = conn.cursor()
-            print(content)
-            cursor.execute(query_update, content)
-
-            cursor.close()
-            conn.commit()
+            execute(conn, INSERT_CATEGORY, content)
             conn.close()
 
             return status_ok.inserted()
+        except KeyError as error:
+            logger.info(error)
+            return missing_fields(error.fields)
         except Exception as error:
-            logger.error(error)
-            return internal_server_error.unexpected_error()
+            logger.info(error)
+            return unexpected_error()
 
 
 class Category(restful.Resource):
@@ -91,54 +78,50 @@ class Category(restful.Resource):
         pass
 
     @staticmethod
+    def get(id=None):
+        try:
+            conn = db_conn()
+            response = dict()
+
+            response['content'] = execute_to_json(conn, SELECT_CATEGORY, (id,))
+
+            conn.close()
+            return response, 200
+        except Exception as error:
+            logger.error(error)
+            return unexpected_error()
+
+    @staticmethod
     def patch(id=None):
 
         try:
-            query_update = '''
-            UPDATE "category"
-                SET (%s) = (%s)
-            WHERE
-                id = (%s);
-            '''
-
-            content = request.get_json()
+            content = validate_update_columns(request.get_json(), UPDATEABLE_COLUMNS)
             logger.info("Request Body: {content}".format(content=content))
 
             conn = db_conn()
-            cursor = conn.cursor()
+
             for key, value in content.items():
                 arguments = (AsIs(key), value, id)
-                cursor.execute(query_update, arguments)
-
-            cursor.close()
-            conn.commit()
+                execute(conn, UPDATE_CATEGORY, arguments)
             conn.close()
 
             return status_ok.modified()
+        except KeyError as error:
+            logger.info(error)
+            return invalid_fields(error.fields)
         except Exception as error:
-            logger.error(error)
-            return internal_server_error.unexpected_error()
+            logger.info(error)
+            return unexpected_error()
 
     @staticmethod
     def delete(id=None):
-
         try:
-            query_update = '''
-            UPDATE "category"
-                SET is_active = false
-            WHERE
-                id = (%s);
-            '''
 
             conn = db_conn()
-            cursor = conn.cursor()
-            cursor.execute(query_update, (id,))
-
-            cursor.close()
-            conn.commit()
+            execute(conn, DELETE_CATEGORY, (id,))
             conn.close()
 
             return status_ok.deactivated()
         except Exception as error:
-            logger.error(error)
-            return internal_server_error.unexpected_error()
+            logger.info(error)
+            return unexpected_error()
