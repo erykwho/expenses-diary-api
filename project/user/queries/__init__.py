@@ -30,15 +30,16 @@ WHERE
 #   AND is_active IS true;
 # """
 #
-# INSERT_USER = """
-# INSERT INTO "user" (
-#     user_id,
-#     name,
-#     description,
-#     abbreviation
-# ) VALUES
-#   (%(user_id)s, %(name)s, %(description)s, %(abbreviation)s);
-# """
+
+INSERT_USER = """
+INSERT INTO "user" (
+    first_name,
+    last_name,
+    email,
+    password
+) VALUES
+  (%(first_name)s, %(last_name)s, %(email)s, %(password)s);
+"""
 #
 #
 # UPDATE_USER = """

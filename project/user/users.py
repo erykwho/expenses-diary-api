@@ -1,31 +1,37 @@
 import flask_restful as restful
+from flask import request
 
 from database.connection import db_conn
-from database.execute import execute_to_json, execute_to_scalar
+from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
+from project.returns import status_ok
+from project.returns.bad_request import missing_fields
 from project.returns.internal_server_error import unexpected_error
-from project.user.queries import SELECT_USERS, COUNT_USERS
+from project.user.queries import SELECT_USERS, COUNT_USERS, INSERT_USER
+from utils.validate_body import validate_body
 
 logger = new("User")
 
+COLUMNS = [
+    "first_name",
+    "last_name",
+    "email",
+    "password"
+]
 
-# COLUMNS = [
-#     "user_id",
-#     "name",
-#     "description",
-#     "abbreviation"
-# ]
-#
-# REQUIRED_COLUMNS = [
-#     "user_id",
-#     "name"
-# ]
-#
-# UPDATEABLE_COLUMNS = [
-#     "name",
-#     "description",
-#     "abbreviation"
-# ]
+REQUIRED_COLUMNS = [
+    "first_name",
+    "last_name",
+    "email",
+    "password"
+]
+
+UPDATEABLE_COLUMNS = [
+    "first_name",
+    "last_name",
+    "email",
+    "password"
+]
 
 
 class Users(restful.Resource):
@@ -48,24 +54,24 @@ class Users(restful.Resource):
             logger.error(error)
             return unexpected_error()
 
-#
-#     @staticmethod
-#     def post():
-#         try:
-#             content = validate_body(request.get_json(), REQUIRED_COLUMNS, COLUMNS)
-#             logger.info("Request Body: {content}".format(content=content))
-#
-#             conn = db_conn()
-#             execute(conn, INSERT_USER, content)
-#             conn.close()
-#
-#             return status_ok.inserted()
-#         except KeyError as error:
-#             logger.info(error)
-#             return missing_fields(error.fields)
-#         except Exception as error:
-#             logger.info(error)
-#             return unexpected_error()
+    @staticmethod
+    def post():
+        try:
+            content = validate_body(request.get_json(), REQUIRED_COLUMNS, COLUMNS)
+            logger.info("Request Body: {content}".format(content=content))
+
+            conn = db_conn()
+            execute(conn, INSERT_USER, content)
+            conn.close()
+
+            return status_ok.inserted()
+        except KeyError as error:
+            logger.info(error)
+            return missing_fields(error.fields)
+        except Exception as error:
+            logger.info(error)
+            return unexpected_error()
+
 #
 #
 # class User(restful.Resource):
