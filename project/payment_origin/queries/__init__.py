@@ -49,3 +49,11 @@ UPDATE "payment_origin"
 WHERE
     id = (%s);
 """
+
+
+DELETE_PAYMENT_ORIGIN = """
+UPDATE "payment_origin"
+    SET is_active = false
+WHERE
+    id = (%s);
+"""

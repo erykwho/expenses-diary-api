@@ -6,7 +6,7 @@ from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
 from project.payment_origin.queries import SELECT_PAYMENT_ORIGINS, COUNT_PAYMENT_ORIGINS, INSERT_PAYMENT_ORIGIN, \
-    SELECT_PAYMENT_ORIGIN, UPDATE_PAYMENT_ORIGIN
+    SELECT_PAYMENT_ORIGIN, UPDATE_PAYMENT_ORIGIN, DELETE_PAYMENT_ORIGIN
 from project.returns import status_ok
 from project.returns.bad_request import missing_fields, invalid_fields
 from project.returns.internal_server_error import unexpected_error
@@ -110,4 +110,13 @@ class PaymentOrigin(restful.Resource):
 
     @staticmethod
     def delete(id=None):
-        return not_implemented()
+        try:
+
+            conn = db_conn()
+            execute(conn, DELETE_PAYMENT_ORIGIN, (id,))
+            conn.close()
+
+            return status_ok.deactivated()
+        except Exception as error:
+            logger.info(error)
+            return unexpected_error()
