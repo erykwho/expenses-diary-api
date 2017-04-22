@@ -1,4 +1,4 @@
-from project.returns import HTTP_UNAUTHORIZED
+from returns import HTTP_UNAUTHORIZED
 
 
 def unauthorized():

@@ -5,11 +5,11 @@ from psycopg2._psycopg import AsIs
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.payment_origin.queries import SELECT_PAYMENT_ORIGINS, COUNT_PAYMENT_ORIGINS, INSERT_PAYMENT_ORIGIN, \
+from queries.payment_origin import SELECT_PAYMENT_ORIGINS, COUNT_PAYMENT_ORIGINS, INSERT_PAYMENT_ORIGIN, \
     SELECT_PAYMENT_ORIGIN, UPDATE_PAYMENT_ORIGIN, DELETE_PAYMENT_ORIGIN
-from project.returns import status_ok
-from project.returns.bad_request import missing_fields, invalid_fields
-from project.returns.internal_server_error import unexpected_error
+from returns import status_ok
+from returns.bad_request import missing_fields, invalid_fields
+from returns.internal_server_error import unexpected_error
 from utils.validate_body import validate_body, validate_update_columns
 
 logger = new("PaymentOrigin")
@@ -39,15 +39,19 @@ class PaymentOrigins(restful.Resource):
 
     @staticmethod
     def get():
-        conn = db_conn()
-        response = dict()
+        try:
+            conn = db_conn()
+            response = dict()
 
-        # TODO: get user_id to send to query
-        response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGINS)
-        response['total'] = execute_to_scalar(conn, COUNT_PAYMENT_ORIGINS)
+            # TODO: get user_id to send to query
+            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGINS)
+            response['total'] = execute_to_scalar(conn, COUNT_PAYMENT_ORIGINS)
 
-        conn.close()
-        return response, 200
+            conn.close()
+            return response, 200
+        except Exception as error:
+            logger.error(error)
+            return unexpected_error()
 
     @staticmethod
     def post():

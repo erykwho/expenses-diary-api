@@ -9,6 +9,7 @@ WHERE
 
 SELECT_USERS = """
 SELECT
+  id,
   first_name,
   last_name,
   email
@@ -20,6 +21,7 @@ WHERE
 
 SELECT_USER = """
 SELECT
+  id,
   first_name,
   last_name,
   email

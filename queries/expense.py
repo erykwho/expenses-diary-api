@@ -4,11 +4,13 @@ SELECT
 FROM
   "expense"
 WHERE
-  is_active IS true;
+  user_id = %s
+  AND is_active IS true;
 """
 
 SELECT_EXPENSES = """
 SELECT
+    id,
     user_id,
     payment_origin_id,
     category_id,
@@ -26,6 +28,7 @@ WHERE
 
 SELECT_EXPENSE = """
 SELECT
+    id,
     user_id,
     payment_origin_id,
     category_id,

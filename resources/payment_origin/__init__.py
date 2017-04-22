@@ -1,7 +1,7 @@
 import flask_restful as restful
 from flask import Blueprint  # pragma: no cover
 
-from project.payment_origin.payment_origins import PaymentOrigins, PaymentOrigin
+from resources.payment_origin.payment_origins import PaymentOrigins, PaymentOrigin
 
 payment_origin = Blueprint(
     'payment_origin', __name__,

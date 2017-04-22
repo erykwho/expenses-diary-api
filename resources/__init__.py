@@ -1,8 +1,8 @@
 from flask import Flask
-from project.expense import expense
-from project.category import category
-from project.payment_origin import payment_origin
-from project.user import user
+from resources.expense import expense
+from resources.category import category
+from resources.payment_origin import payment_origin
+from resources.user import user
 
 app = Flask(__name__)
 

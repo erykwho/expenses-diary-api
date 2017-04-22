@@ -1,4 +1,4 @@
-from project.returns import HTTP_INTERNAL_SERVER_ERROR
+from returns import HTTP_INTERNAL_SERVER_ERROR
 
 
 def unexpected_error():

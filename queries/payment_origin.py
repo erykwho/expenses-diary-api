@@ -10,6 +10,7 @@ WHERE
 
 SELECT_PAYMENT_ORIGINS = """
 SELECT
+  id,
   name,
   description,
   abbreviation
@@ -22,6 +23,7 @@ WHERE
 
 SELECT_PAYMENT_ORIGIN = """
 SELECT
+  id,
   name,
   description,
   abbreviation
