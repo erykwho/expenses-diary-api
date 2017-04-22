@@ -1,4 +1,4 @@
-from project.returns import HTTP_STATUS_OK
+from returns import HTTP_STATUS_OK
 
 
 def deactivated():

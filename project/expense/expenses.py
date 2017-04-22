@@ -5,11 +5,11 @@ from psycopg2._psycopg import AsIs
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.returns import status_ok
-from project.returns.bad_request import missing_fields, invalid_fields
-from project.returns.internal_server_error import unexpected_error
 from queries.expense import SELECT_EXPENSES, COUNT_EXPENSES, INSERT_EXPENSE, SELECT_EXPENSE, UPDATE_EXPENSE, \
     DELETE_EXPENSE
+from returns import status_ok
+from returns.bad_request import missing_fields, invalid_fields
+from returns.internal_server_error import unexpected_error
 from utils.validate_body import validate_body, validate_update_columns
 
 logger = new("Expense")

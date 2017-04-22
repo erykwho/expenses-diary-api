@@ -1,4 +1,4 @@
-from project.returns import HTTP_BAD_REQUEST
+from returns import HTTP_BAD_REQUEST
 from utils.scalarize_arguments import scalarize
 
 

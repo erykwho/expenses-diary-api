@@ -5,11 +5,11 @@ from psycopg2._psycopg import AsIs
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.returns import status_ok
-from project.returns.bad_request import missing_fields, invalid_fields
-from project.returns.internal_server_error import unexpected_error
 from queries.payment_origin import SELECT_PAYMENT_ORIGINS, COUNT_PAYMENT_ORIGINS, INSERT_PAYMENT_ORIGIN, \
     SELECT_PAYMENT_ORIGIN, UPDATE_PAYMENT_ORIGIN, DELETE_PAYMENT_ORIGIN
+from returns import status_ok
+from returns.bad_request import missing_fields, invalid_fields
+from returns.internal_server_error import unexpected_error
 from utils.validate_body import validate_body, validate_update_columns
 
 logger = new("PaymentOrigin")
