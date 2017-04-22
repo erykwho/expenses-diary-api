@@ -5,11 +5,11 @@ from psycopg2._psycopg import AsIs
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.expense.queries import SELECT_EXPENSES, COUNT_EXPENSES, INSERT_EXPENSE, SELECT_EXPENSE, UPDATE_EXPENSE, \
-    DELETE_EXPENSE
 from project.returns import status_ok
 from project.returns.bad_request import missing_fields, invalid_fields
 from project.returns.internal_server_error import unexpected_error
+from queries.expense import SELECT_EXPENSES, COUNT_EXPENSES, INSERT_EXPENSE, SELECT_EXPENSE, UPDATE_EXPENSE, \
+    DELETE_EXPENSE
 from utils.validate_body import validate_body, validate_update_columns
 
 logger = new("Expense")
@@ -57,7 +57,7 @@ class Expenses(restful.Resource):
             user_id = 1
             response = dict()
             response['content'] = execute_to_json(conn, SELECT_EXPENSES, (user_id,))
-            response['total'] = execute_to_scalar(conn, COUNT_EXPENSES)
+            response['total'] = execute_to_scalar(conn, COUNT_EXPENSES, (user_id,))
 
             conn.close()
             return response, 200

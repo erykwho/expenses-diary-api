@@ -4,7 +4,8 @@ SELECT
 FROM
   "expense"
 WHERE
-  is_active IS true;
+  user_id = %s
+  AND is_active IS true;
 """
 
 SELECT_EXPENSES = """

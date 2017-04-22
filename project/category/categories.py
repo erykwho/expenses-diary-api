@@ -5,11 +5,11 @@ from psycopg2.extensions import AsIs
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.category.queries import SELECT_CATEGORIES, COUNT_CATEGORIES, INSERT_CATEGORY, SELECT_CATEGORY, \
-    UPDATE_CATEGORY, DELETE_CATEGORY
 from project.returns import status_ok, internal_server_error
 from project.returns.bad_request import invalid_fields, missing_fields
 from project.returns.internal_server_error import unexpected_error
+from queries.category import SELECT_CATEGORIES, COUNT_CATEGORIES, INSERT_CATEGORY, SELECT_CATEGORY, \
+    UPDATE_CATEGORY, DELETE_CATEGORY
 from utils.validate_body import validate_body, validate_update_columns
 
 logger = new("Category")

@@ -15,22 +15,19 @@ def execute(conn, query, params=None):
 
 
 def execute_to_json(conn, query, params=None):
-    try:
-        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-            cursor.execute(query, params)
+    with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+        cursor.execute(query, params)
 
-            results = []
-            for row in cursor.fetchall():
-                results.append(dict(zip(row.keys(), row.values())))
+        results = []
+        for row in cursor.fetchall():
+            results.append(dict(zip(row.keys(), row.values())))
 
-            return results
-    except Exception as error:
-        raise error
+        return results
 
 
-def execute_to_scalar(conn, query):
+def execute_to_scalar(conn, query, params=None):
     with conn.cursor() as cursor:
-        cursor.execute(query)
+        cursor.execute(query, params)
 
         result = cursor.fetchone()
 
