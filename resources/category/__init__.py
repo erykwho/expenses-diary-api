@@ -1,7 +1,7 @@
 import flask_restful as restful
 from flask import Blueprint  # pragma: no cover
 
-from project.category.categories import Categories, Category
+from resources.category.categories import Categories, Category
 
 category = Blueprint(
     'category', __name__,

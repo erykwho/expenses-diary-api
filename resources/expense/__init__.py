@@ -1,7 +1,7 @@
 import flask_restful as restful
 from flask import Blueprint  # pragma: no cover
 
-from project.expense.expenses import Expenses, Expense
+from resources.expense.expenses import Expenses, Expense
 
 expense = Blueprint(
     'expense', __name__,
