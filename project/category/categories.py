@@ -92,14 +92,6 @@ class Category(restful.Resource):
 
     @staticmethod
     def patch(id=None):
-        try:
-            id = int(id)
-        except ValueError as error:
-            logger.error(error)
-            return bad_request.must_be_integer()
-        except Exception as error:
-            logger.error(error)
-            return internal_server_error.unexpected_error()
 
         try:
             query_update = '''
@@ -129,14 +121,6 @@ class Category(restful.Resource):
 
     @staticmethod
     def delete(id=None):
-        try:
-            id = int(id)
-        except ValueError as error:
-            logger.error(error)
-            return bad_request.must_be_integer()
-        except Exception as error:
-            logger.error(error)
-            return internal_server_error.unexpected_error()
 
         try:
             query_update = '''
