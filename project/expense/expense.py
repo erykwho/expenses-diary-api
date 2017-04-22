@@ -1,14 +1,15 @@
 import flask_restful as restful
 from flask import request
+from psycopg2._psycopg import AsIs
 
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.expense.queries import SELECT_EXPENSES, COUNT_EXPENSES, INSERT_EXPENSE, SELECT_EXPENSE
+from project.expense.queries import SELECT_EXPENSES, COUNT_EXPENSES, INSERT_EXPENSE, SELECT_EXPENSE, UPDATE_EXPENSE
 from project.returns import status_ok
-from project.returns.bad_request import missing_fields
+from project.returns.bad_request import missing_fields, invalid_fields
 from project.returns.internal_server_error import unexpected_error
-from utils.validate_body import validate_body
+from utils.validate_body import validate_body, validate_update_columns
 
 logger = new("Expense")
 
@@ -99,27 +100,27 @@ class Expense(restful.Resource):
         except Exception as error:
             logger.error(error)
             return unexpected_error()
-# 
-#     @staticmethod
-#     def patch(id=None):
-#         try:
-#             content = validate_update_columns(request.get_json(), UPDATEABLE_COLUMNS)
-#             logger.info("Request Body: {content}".format(content=content))
-# 
-#             conn = db_conn()
-# 
-#             for key, value in content.items():
-#                 arguments = (AsIs(key), value, id)
-#                 execute(conn, UPDATE_EXPENSE, arguments)
-#             conn.close()
-# 
-#             return status_ok.modified()
-#         except KeyError as error:
-#             logger.info(error)
-#             return invalid_fields(error.fields)
-#         except Exception as error:
-#             logger.info(error)
-#             return unexpected_error()
+
+    @staticmethod
+    def patch(id=None):
+        try:
+            content = validate_update_columns(request.get_json(), UPDATEABLE_COLUMNS)
+            logger.info("Request Body: {content}".format(content=content))
+
+            conn = db_conn()
+
+            for key, value in content.items():
+                arguments = (AsIs(key), value, id)
+                execute(conn, UPDATE_EXPENSE, arguments)
+            conn.close()
+
+            return status_ok.modified()
+        except KeyError as error:
+            logger.info(error)
+            return invalid_fields(error.fields)
+        except Exception as error:
+            logger.info(error)
+            return unexpected_error()
 # 
 #     @staticmethod
 #     def delete(id=None):
