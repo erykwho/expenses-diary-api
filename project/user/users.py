@@ -7,7 +7,7 @@ from logger.logger import new
 from project.returns import status_ok
 from project.returns.bad_request import missing_fields
 from project.returns.internal_server_error import unexpected_error
-from project.user.queries import SELECT_USERS, COUNT_USERS, INSERT_USER
+from project.user.queries import SELECT_USERS, COUNT_USERS, INSERT_USER, SELECT_USER
 from utils.validate_body import validate_body
 
 logger = new("User")
@@ -72,25 +72,25 @@ class Users(restful.Resource):
             logger.info(error)
             return unexpected_error()
 
-#
-#
-# class User(restful.Resource):
-#     def __init__(self):
-#         pass
-#
-#     @staticmethod
-#     def get(id=None):
-#         try:
-#             conn = db_conn()
-#             response = dict()
-#
-#             response['content'] = execute_to_json(conn, SELECT_USER, (id,))
-#
-#             conn.close()
-#             return response, 200
-#         except Exception as error:
-#             logger.error(error)
-#             return unexpected_error()
+
+
+class User(restful.Resource):
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def get(id=None):
+        try:
+            conn = db_conn()
+            response = dict()
+
+            response['content'] = execute_to_json(conn, SELECT_USER, (id,))
+
+            conn.close()
+            return response, 200
+        except Exception as error:
+            logger.error(error)
+            return unexpected_error()
 #
 #     @staticmethod
 #     def patch(id=None):

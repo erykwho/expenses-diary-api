@@ -17,19 +17,19 @@ FROM
 WHERE
   is_active IS true;
 """
-#
-# SELECT_USER = """
-# SELECT
-#   name,
-#   description,
-#   abbreviation
-# FROM
-#   "user"
-# WHERE
-#   id = %s
-#   AND is_active IS true;
-# """
-#
+
+SELECT_USER = """
+SELECT
+  first_name,
+  last_name,
+  email
+FROM
+  "user"
+WHERE
+  id = %s
+  AND is_active IS true;
+"""
+
 
 INSERT_USER = """
 INSERT INTO "user" (
