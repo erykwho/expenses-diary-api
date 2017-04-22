@@ -18,6 +18,6 @@ def missing_fields(*args):
 
 def invalid_fields(*args):
     return {
-                "message": "Os campos (%s) são inválidos." % ', '.join(str(arg) for arg in scalarize(args)),
+                "message": "Não é possível modificar o(s) campo(s): %s." % ', '.join(str(arg) for arg in scalarize(args)),
                 "code": HTTP_BAD_REQUEST
            }, HTTP_BAD_REQUEST
