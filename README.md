@@ -1,4 +1,4 @@
-#Expenses Diary API
+#Expenses Diary (EXD) API 
 
 Expenses Diary é uma aplicação web que servirá de diário de despesas.
 
