@@ -44,12 +44,17 @@ WHERE
 
 INSERT_EXPENSE = """
 INSERT INTO "expense" (
-    first_name,
-    last_name,
-    email,
-    password
+    user_id,
+    payment_origin_id,
+    category_id,
+    reference_date,
+    description,
+    amount,
+    regreted,
+    comments
 ) VALUES
-  (%(first_name)s, %(last_name)s, %(email)s, %(password)s);
+  (%(user_id)s, %(payment_origin_id)s, %(category_id)s, %(reference_date)s,
+   %(description)s, %(amount)s, %(regreted)s, %(comments)s);
 """
 
 
