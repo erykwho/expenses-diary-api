@@ -41,3 +41,11 @@ INSERT INTO "payment_origin" (
 ) VALUES
   (%(user_id)s, %(name)s, %(description)s, %(abbreviation)s);
 """
+
+
+UPDATE_PAYMENT_ORIGIN = """
+UPDATE "payment_origin"
+    SET (%s) = (%s)
+WHERE
+    id = (%s);
+"""
