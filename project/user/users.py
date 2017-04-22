@@ -8,7 +8,7 @@ from logger.logger import new
 from project.returns import status_ok
 from project.returns.bad_request import missing_fields, invalid_fields
 from project.returns.internal_server_error import unexpected_error
-from project.user.queries import SELECT_USERS, COUNT_USERS, INSERT_USER, SELECT_USER, UPDATE_USER
+from project.user.queries import SELECT_USERS, COUNT_USERS, INSERT_USER, SELECT_USER, UPDATE_USER, DELETE_USER
 from utils.validate_body import validate_body, validate_update_columns
 
 logger = new("User")
@@ -113,16 +113,16 @@ class User(restful.Resource):
         except Exception as error:
             logger.info(error)
             return unexpected_error()
-#
-#     @staticmethod
-#     def delete(id=None):
-#         try:
-#
-#             conn = db_conn()
-#             execute(conn, DELETE_USER, (id,))
-#             conn.close()
-#
-#             return status_ok.deactivated()
-#         except Exception as error:
-#             logger.info(error)
-#             return unexpected_error()
+
+    @staticmethod
+    def delete(id=None):
+        try:
+
+            conn = db_conn()
+            execute(conn, DELETE_USER, (id,))
+            conn.close()
+
+            return status_ok.deactivated()
+        except Exception as error:
+            logger.info(error)
+            return unexpected_error()

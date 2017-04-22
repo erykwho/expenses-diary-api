@@ -49,10 +49,10 @@ WHERE
     id = (%s);
 """
 
-#
-# DELETE_USER = """
-# UPDATE "user"
-#     SET is_active = false
-# WHERE
-#     id = (%s);
-# """
+
+DELETE_USER = """
+UPDATE "user"
+    SET is_active = false
+WHERE
+    id = (%s);
+"""
