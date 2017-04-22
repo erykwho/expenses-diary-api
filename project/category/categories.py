@@ -44,7 +44,7 @@ class Categories(restful.Resource):
             user_id = 1
             response = dict()
             response['content'] = execute_to_json(conn, SELECT_CATEGORIES, (user_id,))
-            response['total'] = execute_to_scalar(conn, COUNT_CATEGORIES)
+            response['total'] = execute_to_scalar(conn, COUNT_CATEGORIES, (user_id,))
 
             conn.close()
             return response, 200
