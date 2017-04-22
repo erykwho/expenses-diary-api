@@ -39,15 +39,19 @@ class PaymentOrigins(restful.Resource):
 
     @staticmethod
     def get():
-        conn = db_conn()
-        response = dict()
+        try:
+            conn = db_conn()
+            response = dict()
 
-        # TODO: get user_id to send to query
-        response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGINS)
-        response['total'] = execute_to_scalar(conn, COUNT_PAYMENT_ORIGINS)
+            # TODO: get user_id to send to query
+            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGINS)
+            response['total'] = execute_to_scalar(conn, COUNT_PAYMENT_ORIGINS)
 
-        conn.close()
-        return response, 200
+            conn.close()
+            return response, 200
+        except Exception as error:
+            logger.error(error)
+            return unexpected_error()
 
     @staticmethod
     def post():
