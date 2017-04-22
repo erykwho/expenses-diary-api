@@ -4,7 +4,7 @@ from flask import request
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.expense.queries import SELECT_EXPENSES, COUNT_EXPENSES, INSERT_EXPENSE
+from project.expense.queries import SELECT_EXPENSES, COUNT_EXPENSES, INSERT_EXPENSE, SELECT_EXPENSE
 from project.returns import status_ok
 from project.returns.bad_request import missing_fields
 from project.returns.internal_server_error import unexpected_error
@@ -42,7 +42,7 @@ UPDATEABLE_COLUMNS = [
 ]
 
 
-class Expense(restful.Resource):
+class Expenses(restful.Resource):
     def __init__(self):
         pass
 
@@ -81,26 +81,24 @@ class Expense(restful.Resource):
             logger.info(error)
             return unexpected_error()
 
-#
-# 
-# 
-# class User(restful.Resource):
-#     def __init__(self):
-#         pass
-# 
-#     @staticmethod
-#     def get(id=None):
-#         try:
-#             conn = db_conn()
-#             response = dict()
-# 
-#             response['content'] = execute_to_json(conn, SELECT_EXPENSE, (id,))
-# 
-#             conn.close()
-#             return response, 200
-#         except Exception as error:
-#             logger.error(error)
-#             return unexpected_error()
+
+class Expense(restful.Resource):
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def get(id=None):
+        try:
+            conn = db_conn()
+            response = dict()
+
+            response['content'] = execute_to_json(conn, SELECT_EXPENSE, (id,))
+
+            conn.close()
+            return response, 200
+        except Exception as error:
+            logger.error(error)
+            return unexpected_error()
 # 
 #     @staticmethod
 #     def patch(id=None):
