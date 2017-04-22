@@ -10,12 +10,12 @@ from project.returns import status_ok, bad_request, internal_server_error
 logger = new("Category")
 
 
-class Category(restful.Resource):
+class Categories(restful.Resource):
     def __init__(self):
         pass
 
     @staticmethod
-    def get(category_id=None):
+    def get():
         logger.info("GET - Category")
         try:
             conn = db_conn()
@@ -56,7 +56,7 @@ class Category(restful.Resource):
             return internal_server_error.unexpected_error()
 
     @staticmethod
-    def post(category_id=None):
+    def post():
 
         try:
             query_update = '''
@@ -85,10 +85,15 @@ class Category(restful.Resource):
             logger.error(error)
             return internal_server_error.unexpected_error()
 
+
+class Category(restful.Resource):
+    def __init__(self):
+        pass
+
     @staticmethod
-    def patch(category_id=None):
+    def patch(id=None):
         try:
-            category_id = int(category_id)
+            id = int(id)
         except ValueError as error:
             logger.error(error)
             return bad_request.must_be_integer()
@@ -110,7 +115,7 @@ class Category(restful.Resource):
             conn = db_conn()
             cursor = conn.cursor()
             for key, value in content.items():
-                arguments = (AsIs(key), value, category_id)
+                arguments = (AsIs(key), value, id)
                 cursor.execute(query_update, arguments)
 
             cursor.close()
@@ -123,9 +128,9 @@ class Category(restful.Resource):
             return internal_server_error.unexpected_error()
 
     @staticmethod
-    def delete(category_id=None):
+    def delete(id=None):
         try:
-            category_id = int(category_id)
+            id = int(id)
         except ValueError as error:
             logger.error(error)
             return bad_request.must_be_integer()
@@ -143,7 +148,7 @@ class Category(restful.Resource):
 
             conn = db_conn()
             cursor = conn.cursor()
-            cursor.execute(query_update, (category_id,))
+            cursor.execute(query_update, (id,))
 
             cursor.close()
             conn.commit()

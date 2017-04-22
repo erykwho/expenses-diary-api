@@ -1,7 +1,7 @@
 import flask_restful as restful
 from flask import Blueprint  # pragma: no cover
 
-from project.category.categories import Category
+from project.category.categories import Categories, Category
 
 category = Blueprint(
     'category', __name__,
@@ -10,4 +10,5 @@ category = Blueprint(
 api = restful.Api()
 api.init_app(category)
 
-api.add_resource(Category, '/v1/categories', '/v1/categories/<category_id>')
+api.add_resource(Categories, '/v1/categories',)
+api.add_resource(Category, '/v1/categories/<int:id>')
