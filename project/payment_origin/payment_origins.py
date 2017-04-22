@@ -10,7 +10,6 @@ from project.payment_origin.queries import SELECT_PAYMENT_ORIGINS, COUNT_PAYMENT
 from project.returns import status_ok
 from project.returns.bad_request import missing_fields, invalid_fields
 from project.returns.internal_server_error import unexpected_error
-from project.returns.not_implemented import not_implemented
 from utils.validate_body import validate_body, validate_update_columns
 
 logger = new("PaymentOrigin")
@@ -79,7 +78,7 @@ class PaymentOrigin(restful.Resource):
             conn = db_conn()
             response = dict()
 
-            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGIN, id)
+            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGIN, (id,))
 
             conn.close()
             return response, 200
