@@ -40,15 +40,15 @@ INSERT INTO "user" (
 ) VALUES
   (%(first_name)s, %(last_name)s, %(email)s, %(password)s);
 """
-#
-#
-# UPDATE_USER = """
-# UPDATE "user"
-#     SET (%s) = (%s)
-# WHERE
-#     id = (%s);
-# """
-#
+
+
+UPDATE_USER = """
+UPDATE "user"
+    SET (%s) = (%s)
+WHERE
+    id = (%s);
+"""
+
 #
 # DELETE_USER = """
 # UPDATE "user"
