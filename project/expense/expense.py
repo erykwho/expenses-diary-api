@@ -5,7 +5,8 @@ from psycopg2._psycopg import AsIs
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
-from project.expense.queries import SELECT_EXPENSES, COUNT_EXPENSES, INSERT_EXPENSE, SELECT_EXPENSE, UPDATE_EXPENSE
+from project.expense.queries import SELECT_EXPENSES, COUNT_EXPENSES, INSERT_EXPENSE, SELECT_EXPENSE, UPDATE_EXPENSE, \
+    DELETE_EXPENSE
 from project.returns import status_ok
 from project.returns.bad_request import missing_fields, invalid_fields
 from project.returns.internal_server_error import unexpected_error
@@ -121,16 +122,16 @@ class Expense(restful.Resource):
         except Exception as error:
             logger.info(error)
             return unexpected_error()
-# 
-#     @staticmethod
-#     def delete(id=None):
-#         try:
-# 
-#             conn = db_conn()
-#             execute(conn, DELETE_EXPENSE, (id,))
-#             conn.close()
-# 
-#             return status_ok.deactivated()
-#         except Exception as error:
-#             logger.info(error)
-#             return unexpected_error()
+
+    @staticmethod
+    def delete(id=None):
+        try:
+
+            conn = db_conn()
+            execute(conn, DELETE_EXPENSE, (id,))
+            conn.close()
+
+            return status_ok.deactivated()
+        except Exception as error:
+            logger.info(error)
+            return unexpected_error()
