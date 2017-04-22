@@ -10,4 +10,4 @@ category = Blueprint(
 api = restful.Api()
 api.init_app(category)
 
-api.add_resource(Category, '/v1/categories/', '/v1/categories/<category_id>')
+api.add_resource(Category, '/v1/categories', '/v1/categories/<category_id>')

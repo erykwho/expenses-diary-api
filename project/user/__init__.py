@@ -10,5 +10,5 @@ user = Blueprint(
 api = restful.Api()
 api.init_app(user)
 
-api.add_resource(Users, '/v1/users/')
+api.add_resource(Users, '/v1/users')
 # api.add_resource(User, '/v1/users/<int:id>')
