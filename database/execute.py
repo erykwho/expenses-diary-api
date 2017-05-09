@@ -31,4 +31,7 @@ def execute_to_scalar(conn, query, params=None):
 
         result = cursor.fetchone()
 
-    return result[0]
+        if not isinstance(result, type(None)):
+            return result[0]
+        else:
+            return None
