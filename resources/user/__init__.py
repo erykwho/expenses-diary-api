@@ -1,7 +1,7 @@
 import flask_restful as restful
 from flask import Blueprint  # pragma: no cover
 
-from project.user.users import Users, User
+from resources.user.users import Users, User
 
 user = Blueprint(
     'user', __name__,

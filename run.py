@@ -1,4 +1,4 @@
-from project import app
+from resources import app
 from config.config import Config
 from logger.logger import new
 

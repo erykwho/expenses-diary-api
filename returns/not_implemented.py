@@ -1,4 +1,4 @@
-from project.returns import HTTP_NOT_IMPLEMENTED
+from returns import HTTP_NOT_IMPLEMENTED
 
 
 def not_implemented():
