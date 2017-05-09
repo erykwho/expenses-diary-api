@@ -44,6 +44,6 @@ Este repositório refere-se à API desta aplicação.
         
     /categories:
         GET, POST
-    /categories:
+    /category:
         PATCH, DELETE
 
