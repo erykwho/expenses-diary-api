@@ -93,12 +93,12 @@ class Expense(restful.Resource):
         pass
 
     @login_required
-    def get(self):
+    def get(self, id=None):
         try:
             conn = db_conn()
             response = dict()
 
-            response['content'] = execute_to_json(conn, SELECT_EXPENSE, id)
+            response['content'] = execute_to_json(conn, SELECT_EXPENSE, (id, ))
 
             conn.close()
             return response, 200
@@ -132,7 +132,7 @@ class Expense(restful.Resource):
         try:
 
             conn = db_conn()
-            execute(conn, DELETE_EXPENSE, id)
+            execute(conn, DELETE_EXPENSE, (id, ))
             conn.close()
 
             return status_ok.deactivated()
