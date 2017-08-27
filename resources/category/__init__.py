@@ -11,4 +11,4 @@ api = restful.Api()
 api.init_app(category)
 
 api.add_resource(Categories, '/v1/categories',)
-api.add_resource(Category, '/v1/categories/<int:id>')
+api.add_resource(Category, '/v1/category/<int:id>')

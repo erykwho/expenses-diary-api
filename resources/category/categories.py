@@ -2,6 +2,7 @@ import flask_restful as restful
 from flask import request
 from psycopg2.extensions import AsIs
 
+from authentication.authentication import login_required
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
@@ -22,7 +23,6 @@ COLUMNS = [
 ]
 
 REQUIRED_COLUMNS = [
-    "user_id",
     "name"
 ]
 
@@ -36,13 +36,13 @@ class Categories(restful.Resource):
     def __init__(self):
         pass
 
-    @staticmethod
-    def get():
+    @login_required
+    def get(self):
         logger.info("GET - Category")
         try:
             conn = db_conn()
 
-            user_id = 1
+            user_id = request.headers.get('User-Id')
             response = dict()
             response['content'] = execute_to_json(conn, SELECT_CATEGORIES, (user_id,))
             response['total'] = execute_to_scalar(conn, COUNT_CATEGORIES, (user_id,))
@@ -53,13 +53,15 @@ class Categories(restful.Resource):
             logger.error(error)
             return internal_server_error.unexpected_error()
 
-    @staticmethod
-    def post():
+    @login_required
+    def post(self):
 
         try:
 
             content = validate_body(request.get_json(), REQUIRED_COLUMNS, COLUMNS)
             logger.info("Request Body: {content}".format(content=content))
+
+            content['user_id'] = request.headers.get('User-Id')
 
             conn = db_conn()
             execute(conn, INSERT_CATEGORY, content)
@@ -78,8 +80,8 @@ class Category(restful.Resource):
     def __init__(self):
         pass
 
-    @staticmethod
-    def get(id=None):
+    @login_required
+    def get(self, id=None):
         try:
             conn = db_conn()
             response = dict()
@@ -92,8 +94,8 @@ class Category(restful.Resource):
             logger.error(error)
             return unexpected_error()
 
-    @staticmethod
-    def patch(id=None):
+    @login_required
+    def patch(self, id=None):
 
         try:
             content = validate_update_columns(request.get_json(), UPDATEABLE_COLUMNS)
@@ -114,8 +116,8 @@ class Category(restful.Resource):
             logger.info(error)
             return unexpected_error()
 
-    @staticmethod
-    def delete(id=None):
+    @login_required
+    def delete(self, id=None):
         try:
 
             conn = db_conn()
