@@ -1,5 +1,6 @@
 import flask_login
 from flask import Flask
+from flask_cors import CORS
 
 from resources.authentication import authentication
 from resources.category import category
@@ -18,3 +19,5 @@ app.register_blueprint(authentication)
 # Setup of login session manager
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
+
+CORS(app)

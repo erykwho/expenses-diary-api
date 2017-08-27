@@ -1,4 +1,5 @@
-#Expenses Diary (EXD) API 
+
+# Expenses Diary (EXD) API 
 
 Expenses Diary é uma aplicação web que servirá de diário de despesas.
 
@@ -12,17 +13,37 @@ Nesta aplicação, você poderá:
 - Gerar análises estatísticas de seus gastos.
 
 
-	Uma despesa conterá:
-		- Data
-		- Valor
-		- Meio de Pagamento
-		- Descrição
-		- Categoria
-		- Arrependimento
+    Uma despesa conterá:
+    - Data
+    - Valor
+    - Meio de Pagamento
+    - Descrição
+    - Categoria
+    - Arrependimento
 
 Este repositório refere-se à API desta aplicação.
 
-Esta api se encontra na versão 1.0.
 
-    Endpoints: a ser definido.
+## Endpoints
+
+    /expenses:
+        GET /v1/expenses
+        POST /v1/expenses
+    /expense/{id}:
+        GET, PATCH, DELETE
+    
+    /users:
+        GET, POST
+    /user/{id}:
+        GET, PATCH, DELETE
+        
+    /payment-origins:
+        GET, POST
+    /payment-origin/{id}:
+        GET, PATCH, DELETE
+        
+    /categories:
+        GET, POST
+    /category:
+        PATCH, DELETE
 
