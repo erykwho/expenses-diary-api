@@ -2,9 +2,6 @@ from functools import wraps
 
 from flask import request, abort
 
-from exceptions.authentication_failed import AuthenticationFailed
-
-
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):

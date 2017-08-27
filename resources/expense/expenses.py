@@ -12,7 +12,6 @@ from returns import status_ok
 from returns.bad_request import missing_fields, invalid_fields
 from returns.internal_server_error import unexpected_error
 from utils.validate_body import validate_body, validate_update_columns
-from exceptions.authentication_failed import AuthenticationFailed
 
 logger = new("Expense")
 
