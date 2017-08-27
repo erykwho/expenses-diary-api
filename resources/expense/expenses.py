@@ -2,6 +2,7 @@ import flask_restful as restful
 from flask import request
 from psycopg2._psycopg import AsIs
 
+from authentication.authentication import login_required
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
@@ -26,7 +27,6 @@ COLUMNS = [
 ]
 
 REQUIRED_COLUMNS = [
-    "user_id",
     "payment_origin_id",
     "category_id",
     "reference_date",
@@ -48,28 +48,31 @@ class Expenses(restful.Resource):
     def __init__(self):
         pass
 
-    @staticmethod
-    def get():
+    @login_required
+    def get(self):
         try:
             conn = db_conn()
-
-            # TODO: get expense_id to send to query
-            user_id = 1
+            user_id = request.headers.get('User-Id')
             response = dict()
-            response['content'] = execute_to_json(conn, SELECT_EXPENSES, (user_id,))
-            response['total'] = execute_to_scalar(conn, COUNT_EXPENSES, (user_id,))
+            response['content'] = execute_to_json(conn, SELECT_EXPENSES, user_id)
+            response['total'] = execute_to_scalar(conn, COUNT_EXPENSES, user_id)
 
             conn.close()
             return response, 200
+        except AuthenticationFailed as err:
+            return err.http_response
         except Exception as error:
             logger.error(error)
             return unexpected_error()
 
-    @staticmethod
-    def post():
+    @login_required
+    def post(self):
         try:
+
             content = validate_body(request.get_json(), REQUIRED_COLUMNS, COLUMNS)
             logger.info("Request Body: {content}".format(content=content))
+
+            content['user_id'] = request.headers.get('User-Id')
 
             conn = db_conn()
             execute(conn, INSERT_EXPENSE, content)
@@ -88,13 +91,13 @@ class Expense(restful.Resource):
     def __init__(self):
         pass
 
-    @staticmethod
-    def get(id=None):
+    @login_required
+    def get(self, id=None):
         try:
             conn = db_conn()
             response = dict()
 
-            response['content'] = execute_to_json(conn, SELECT_EXPENSE, (id,))
+            response['content'] = execute_to_json(conn, SELECT_EXPENSE, (id, ))
 
             conn.close()
             return response, 200
@@ -102,8 +105,8 @@ class Expense(restful.Resource):
             logger.error(error)
             return unexpected_error()
 
-    @staticmethod
-    def patch(id=None):
+    @login_required
+    def patch(self, id=None):
         try:
             content = validate_update_columns(request.get_json(), UPDATEABLE_COLUMNS)
             logger.info("Request Body: {content}".format(content=content))
@@ -123,12 +126,12 @@ class Expense(restful.Resource):
             logger.info(error)
             return unexpected_error()
 
-    @staticmethod
-    def delete(id=None):
+    @login_required
+    def delete(self, id=None):
         try:
 
             conn = db_conn()
-            execute(conn, DELETE_EXPENSE, (id,))
+            execute(conn, DELETE_EXPENSE, (id, ))
             conn.close()
 
             return status_ok.deactivated()

@@ -6,6 +6,7 @@ logger = new("Run")
 
 if __name__ == '__main__':
     app.config.from_object(Config())
+    app.secret_key = 'avadaKedavraBoladão'
     host = '0.0.0.0'
     port = app.config.get("PORT")
     logger.info("Iniciando aplicacao no host {} e porta {}".format(host, port))
