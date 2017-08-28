@@ -59,8 +59,6 @@ class Expenses(restful.Resource):
 
             conn.close()
             return response, 200
-        except AuthenticationFailed as err:
-            return err.http_response
         except Exception as error:
             logger.error(error)
             return unexpected_error()
