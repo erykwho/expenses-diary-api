@@ -60,10 +60,14 @@ class Users(restful.Resource):
             logger.info("Request Body: {content}".format(content=content))
 
             conn = db_conn()
-            execute(conn, INSERT_USER, content)
+            user_id = execute_to_scalar(conn, INSERT_USER, content)
+            conn.commit()
             conn.close()
 
-            return status_ok.inserted()
+            if not user_id:
+                raise Exception
+
+            return status_ok.user_session(user_id, content['email'])
         except KeyError as error:
             logger.info(error)
             return missing_fields(error.fields)

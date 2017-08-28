@@ -54,8 +54,8 @@ class Expenses(restful.Resource):
             conn = db_conn()
             user_id = request.headers.get('User-Id')
             response = dict()
-            response['content'] = execute_to_json(conn, SELECT_EXPENSES, user_id)
-            response['total'] = execute_to_scalar(conn, COUNT_EXPENSES, user_id)
+            response['content'] = execute_to_json(conn, SELECT_EXPENSES, (user_id, ))
+            response['total'] = execute_to_scalar(conn, COUNT_EXPENSES, (user_id, ))
 
             conn.close()
             return response, 200
