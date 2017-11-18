@@ -2,6 +2,7 @@ import flask_restful as restful
 from flask import request
 from psycopg2._psycopg import AsIs
 
+from authentication.authentication import login_required
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
@@ -22,7 +23,6 @@ COLUMNS = [
 ]
 
 REQUIRED_COLUMNS = [
-    "user_id",
     "name"
 ]
 
@@ -37,15 +37,16 @@ class PaymentOrigins(restful.Resource):
     def __init__(self):
         pass
 
-    @staticmethod
-    def get():
+    @login_required
+    def get(self):
         try:
             conn = db_conn()
             response = dict()
 
-            # TODO: get user_id to send to query
-            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGINS)
-            response['total'] = execute_to_scalar(conn, COUNT_PAYMENT_ORIGINS)
+            user_id = request.headers.get('User-Id')
+
+            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGINS, user_id)
+            response['total'] = execute_to_scalar(conn, COUNT_PAYMENT_ORIGINS, user_id)
 
             conn.close()
             return response, 200
@@ -53,11 +54,13 @@ class PaymentOrigins(restful.Resource):
             logger.error(error)
             return unexpected_error()
 
-    @staticmethod
-    def post():
+    @login_required
+    def post(self):
         try:
             content = validate_body(request.get_json(), REQUIRED_COLUMNS, COLUMNS)
             logger.info("Request Body: {content}".format(content=content))
+
+            content['user_id'] = request.headers.get('User-Id')
 
             conn = db_conn()
             execute(conn, INSERT_PAYMENT_ORIGIN, content)
@@ -76,13 +79,13 @@ class PaymentOrigin(restful.Resource):
     def __init__(self):
         pass
 
-    @staticmethod
-    def get(id=None):
+    @login_required
+    def get(self, id=None):
         try:
             conn = db_conn()
             response = dict()
 
-            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGIN, (id,))
+            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGIN, (id, ))
 
             conn.close()
             return response, 200
@@ -90,8 +93,8 @@ class PaymentOrigin(restful.Resource):
             logger.error(error)
             return unexpected_error()
 
-    @staticmethod
-    def patch(id=None):
+    @login_required
+    def patch(self, id=None):
         try:
             content = validate_update_columns(request.get_json(), UPDATEABLE_COLUMNS)
             logger.info("Request Body: {content}".format(content=content))
@@ -111,12 +114,12 @@ class PaymentOrigin(restful.Resource):
             logger.info(error)
             return unexpected_error()
 
-    @staticmethod
-    def delete(id=None):
+    @login_required
+    def delete(self, id=None):
         try:
 
             conn = db_conn()
-            execute(conn, DELETE_PAYMENT_ORIGIN, (id,))
+            execute(conn, DELETE_PAYMENT_ORIGIN, (id, ))
             conn.close()
 
             return status_ok.deactivated()

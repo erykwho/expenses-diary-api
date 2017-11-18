@@ -4,7 +4,7 @@ SELECT
 FROM
   "payment_origin"
 WHERE
-  user_id = 1
+  user_id = %s
   AND is_active IS true;
 """
 
@@ -17,7 +17,7 @@ SELECT
 FROM
   "payment_origin"
 WHERE
-  user_id = 1
+  user_id = %s
   AND is_active IS true;
 """
 

@@ -40,7 +40,8 @@ INSERT INTO "user" (
     email,
     password
 ) VALUES
-  (%(first_name)s, %(last_name)s, %(email)s, %(password)s);
+  (%(first_name)s, %(last_name)s, %(email)s, %(password)s)
+RETURNING id;
 """
 
 

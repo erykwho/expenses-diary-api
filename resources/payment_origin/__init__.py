@@ -11,4 +11,4 @@ api = restful.Api()
 api.init_app(payment_origin)
 
 api.add_resource(PaymentOrigins, '/v1/payment-origins')
-api.add_resource(PaymentOrigin, '/v1/payment-origins/<int:id>')
+api.add_resource(PaymentOrigin, '/v1/payment-origin/<int:id>')

@@ -12,5 +12,5 @@ api = restful.Api()
 api.init_app(expense)
 
 api.add_resource(Expenses, '/v1/expenses')
-api.add_resource(Expense, '/v1/expenses/<int:id>')
+api.add_resource(Expense, '/v1/expense/<int:id>')
 
