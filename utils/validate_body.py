@@ -1,8 +1,12 @@
+from utils.convert_string import StringConverter
+
+
 def parse_columns(data, columns):
+    new_data = {}
     for column in columns:
-        if column not in data:
-            data.update({column: None})
-    return data
+        column_snake_case = StringConverter.camel_case_to_snake_case(column)
+        new_data[column_snake_case] = data.get(column)
+    return new_data
 
 
 def validate_body(data, required_columns, columns):
