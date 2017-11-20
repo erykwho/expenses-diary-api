@@ -1,6 +1,7 @@
 import flask_restful as restful
 from flask import request
 
+from authentication.password import encrypt
 from database.connection import db_conn
 from database.execute import execute_to_json, execute_to_scalar, execute
 from logger.logger import new
@@ -12,25 +13,27 @@ from utils.validate_body import validate_body
 
 logger = new("User")
 
+PASSWORD = "password"
+
 COLUMNS = [
     "firstName",
     "lastName",
     "email",
-    "password"
+    PASSWORD
 ]
 
 REQUIRED_COLUMNS = [
     "firstName",
     "lastName",
     "email",
-    "password"
+    PASSWORD
 ]
 
 UPDATEABLE_COLUMNS = [
     "firstName",
     "lastName",
     "email",
-    "password"
+    PASSWORD
 ]
 
 
@@ -57,6 +60,7 @@ class Users(restful.Resource):
     def post():
         try:
             content = validate_body(request.get_json(), REQUIRED_COLUMNS, COLUMNS)
+            content = encrypt(content)
             logger.info("Request Body: {content}".format(content=content))
 
             conn = db_conn()

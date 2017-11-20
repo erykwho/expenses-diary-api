@@ -2,6 +2,7 @@ from functools import wraps
 
 from flask import request, abort
 
+
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):

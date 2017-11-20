@@ -4,6 +4,14 @@ SELECT
 FROM
   "user"
 WHERE
-  "email" = %(email)s
-  AND "password" = %(password)s;
+  "email" = %(email)s;
+"""
+
+SELECT_USER_PASSWORD = """
+SELECT 
+  "password"
+FROM
+  "user"
+WHERE
+  "email" = %(email)s;
 """
