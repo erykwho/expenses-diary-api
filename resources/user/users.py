@@ -13,22 +13,22 @@ from utils.validate_body import validate_body
 logger = new("User")
 
 COLUMNS = [
-    "first_name",
-    "last_name",
+    "firstName",
+    "lastName",
     "email",
     "password"
 ]
 
 REQUIRED_COLUMNS = [
-    "first_name",
-    "last_name",
+    "firstName",
+    "lastName",
     "email",
     "password"
 ]
 
 UPDATEABLE_COLUMNS = [
-    "first_name",
-    "last_name",
+    "firstName",
+    "lastName",
     "email",
     "password"
 ]
