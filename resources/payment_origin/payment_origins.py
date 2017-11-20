@@ -16,7 +16,7 @@ from utils.validate_body import validate_body, validate_update_columns
 logger = new("PaymentOrigin")
 
 COLUMNS = [
-    "user_id",
+    "userId",
     "name",
     "description",
     "abbreviation"

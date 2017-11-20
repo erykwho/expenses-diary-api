@@ -16,10 +16,10 @@ from utils.validate_body import validate_body, validate_update_columns
 logger = new("Expense")
 
 COLUMNS = [
-    "user_id",
-    "payment_origin_id",
-    "category_id",
-    "reference_date",
+    "userId",
+    "paymentOriginId",
+    "categoryId",
+    "referenceDate",
     "description",
     "amount",
     "regreted",
@@ -27,16 +27,16 @@ COLUMNS = [
 ]
 
 REQUIRED_COLUMNS = [
-    "payment_origin_id",
-    "category_id",
-    "reference_date",
+    "paymentOriginId",
+    "categoryId",
+    "referenceDate",
     "amount"
 ]
 
 UPDATEABLE_COLUMNS = [
-    "payment_origin_id",
-    "category_id",
-    "reference_date",
+    "paymentOriginId",
+    "categoryId",
+    "referenceDate",
     "description",
     "amount",
     "regreted",
