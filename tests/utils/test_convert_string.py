@@ -50,6 +50,29 @@ class TestCamelCaseToSnakeCase(unittest.TestCase):
         actual = StringConverter().camel_case_to_snake_case(my_dict)
         self.assertEqual(expected, actual)
 
+    def test_camel_case_to_snake_case_nested_dict(self):
+        """
+            Asserts if converts all keys of a nested dict
+            from camelCase to snakeCase correctly
+        """
+        my_dict = {
+            'fooBar': {
+                'barFoo': 1,
+            },
+            'pipTchu': 'b',
+            'erykWho': 'c'
+        }
+        expected = {
+            'foo_bar': {
+                'bar_foo': 1
+            },
+            'pip_tchu': 'b',
+            'eryk_who': 'c'
+        }
+        actual = StringConverter().camel_case_to_snake_case(my_dict)
+        self.assertEqual(expected, actual)
+
+
     def test_snake_case_to_camel_case(self):
         """
             Asserts if converts a snakeCase name to camelCase
@@ -82,6 +105,28 @@ class TestCamelCaseToSnakeCase(unittest.TestCase):
         }
         expected = {
             'fooBar': 'a',
+            'pipTchu': 'b',
+            'erykWho': 'c'
+        }
+        actual = StringConverter().snake_case_to_camel_case(my_dict)
+        self.assertEqual(expected, actual)
+
+    def test_snake_case_to_camel_case_nested_dict(self):
+        """
+            Asserts if converts all the keys from a nested dict
+            from snakeCase to camelCase correctly
+        """
+        my_dict = {
+            'foo_bar': {
+                'bar_foo': 2
+            },
+            'pip_tchu': 'b',
+            'eryk_who': 'c'
+        }
+        expected = {
+            'fooBar': {
+                'barFoo': 2
+            },
             'pipTchu': 'b',
             'erykWho': 'c'
         }
