@@ -1,6 +1,6 @@
 import unittest
 
-from utils.validate_body import parse_columns
+from utils.validate_body import parse_columns, validate_update_columns
 
 
 class TestParseColumns(unittest.TestCase):
@@ -18,10 +18,39 @@ class TestParseColumns(unittest.TestCase):
         columns = ['fooBar', 'pip', 'schuMan']
 
         expected = {
-            'foo_bar': 1,
+            'fooBar': 1,
             'pip': 2,
-            'schu_man': None
+            'schuMan': None
         }
 
         actual = parse_columns(data, columns)
+        self.assertEqual(expected, actual)
+
+    def test_validate_update_columns(self):
+        data = {
+            'a': 1,
+            'b': 2
+        }
+        columns = [
+            'a',
+            'b'
+        ]
+        expected = data
+        actual = validate_update_columns(data, columns)
+        self.assertEqual(expected, actual)
+
+    def test_validate_update_columns_should_convert_case(self):
+        data = {
+            'columnA': 1,
+            'columnB': 2
+        }
+        columns = [
+            'columnA',
+            'columnB'
+        ]
+        expected = {
+            'column_a': 1,
+            'column_b': 2
+        }
+        actual = validate_update_columns(data, columns)
         self.assertEqual(expected, actual)
