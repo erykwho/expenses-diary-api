@@ -10,30 +10,40 @@ WHERE
 
 SELECT_EXPENSES = """
 SELECT
-    id,
-    user_id,
-    payment_origin_id,
+    expense.id,
+    expense.user_id,
     category_id,
-    reference_date,
-    description,
-    amount,
-    regreted,
-    comments
+    expense.payment_origin_id,
+    row_to_json(payment_origin) AS payment_origin,
+    row_to_json(category) AS category,
+    expense.reference_date,
+    expense.description,
+    expense.amount,
+    expense.regreted,
+    expense.comments
 FROM
-    "expense"
+  "expense"
+  JOIN "payment_origin"
+    ON payment_origin.id = expense.payment_origin_id 
+  JOIN "category"
+    ON category.id = expense.category_id
 WHERE 
-  user_id = %s
-  AND is_active IS true
+  expense.user_id = 1
+  AND expense.is_active IS true
+  AND payment_origin.is_active IS true
+  AND category.is_active IS true
 ORDER BY
-    id ASC;
+    expense.id ASC;
 """
 
 SELECT_EXPENSE = """
 SELECT
     id,
     user_id,
-    payment_origin_id,
     category_id,
+    payment_origin_id,
+    row_to_json(payment_origin) AS payment_origin,
+    row_to_json(category) AS category,
     reference_date,
     description,
     amount,
@@ -41,9 +51,15 @@ SELECT
     comments
 FROM
   "expense"
+  INNER JOIN "payment_origin"
+    ON expense.payment_origin_id = payment_origin.id 
+  JOIN "category"
+    ON category.id = expense.category_id
 WHERE
   id = %s
-  AND is_active IS true;
+  AND expense.is_active IS true
+  AND payment_origin.is_active IS true
+  AND category.is_active IS true;
 """
 
 

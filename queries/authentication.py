@@ -4,7 +4,8 @@ SELECT
 FROM
   "user"
 WHERE
-  "email" = %(email)s;
+  "email" = %(email)s
+  AND is_active = true;
 """
 
 SELECT_USER_PASSWORD = """
@@ -13,5 +14,6 @@ SELECT
 FROM
   "user"
 WHERE
-  "email" = %(email)s;
+  "email" = %(email)s
+  AND is_active = true;
 """

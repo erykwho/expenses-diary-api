@@ -1,5 +1,7 @@
 from psycopg2.extras import RealDictCursor
 
+from utils.convert_string import StringConverter
+
 
 def execute(conn, query, params=None):
     try:
@@ -20,6 +22,7 @@ def execute_to_json(conn, query, params=None):
 
         results = []
         for row in cursor.fetchall():
+            row = StringConverter().snake_case_to_camel_case(row)
             results.append(dict(zip(row.keys(), row.values())))
 
         return results

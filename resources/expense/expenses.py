@@ -54,8 +54,8 @@ class Expenses(restful.Resource):
             conn = db_conn()
             user_id = request.headers.get('User-Id')
             response = dict()
-            response['content'] = execute_to_json(conn, SELECT_EXPENSES, (user_id, ))
-            response['total'] = execute_to_scalar(conn, COUNT_EXPENSES, (user_id, ))
+            response['content'] = execute_to_json(conn, SELECT_EXPENSES, (user_id,))
+            response['total'] = execute_to_scalar(conn, COUNT_EXPENSES, (user_id,))
 
             conn.close()
             return response, 200
@@ -95,7 +95,7 @@ class Expense(restful.Resource):
             conn = db_conn()
             response = dict()
 
-            response['content'] = execute_to_json(conn, SELECT_EXPENSE, (id, ))
+            response['content'] = execute_to_json(conn, SELECT_EXPENSE, (id,))
 
             conn.close()
             return response, 200
@@ -106,8 +106,9 @@ class Expense(restful.Resource):
     @login_required
     def patch(self, id=None):
         try:
-            content = validate_update_columns(request.get_json(), UPDATEABLE_COLUMNS)
+            content = request.get_json()
             logger.info("Request Body: {content}".format(content=content))
+            content = validate_update_columns(content, UPDATEABLE_COLUMNS)
 
             conn = db_conn()
 
@@ -129,7 +130,7 @@ class Expense(restful.Resource):
         try:
 
             conn = db_conn()
-            execute(conn, DELETE_EXPENSE, (id, ))
+            execute(conn, DELETE_EXPENSE, (id,))
             conn.close()
 
             return status_ok.deactivated()
