@@ -12,6 +12,7 @@ SELECT_EXPENSES = """
 SELECT
     expense.id,
     expense.user_id,
+    category_id,
     expense.payment_origin_id,
     row_to_json(payment_origin) AS payment_origin,
     row_to_json(category) AS category,
@@ -39,10 +40,10 @@ SELECT_EXPENSE = """
 SELECT
     id,
     user_id,
+    category_id,
     payment_origin_id,
     row_to_json(payment_origin) AS payment_origin,
     row_to_json(category) AS category,
-    category_id,
     reference_date,
     description,
     amount,
