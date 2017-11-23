@@ -18,7 +18,9 @@ FROM
   "payment_origin"
 WHERE
   user_id = %s
-  AND is_active IS true;
+  AND is_active IS true
+ORDER BY
+    id ASC;
 """
 
 SELECT_PAYMENT_ORIGIN = """
@@ -31,7 +33,9 @@ FROM
   "payment_origin"
 WHERE
   id = %s
-  AND is_active IS true;
+  AND is_active IS true
+ORDER BY
+    id ASC;
 """
 
 INSERT_PAYMENT_ORIGIN = """
