@@ -44,9 +44,8 @@ class PaymentOrigins(restful.Resource):
             response = dict()
 
             user_id = request.headers.get('User-Id')
-
-            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGINS, user_id)
-            response['total'] = execute_to_scalar(conn, COUNT_PAYMENT_ORIGINS, user_id)
+            response['content'] = execute_to_json(conn, SELECT_PAYMENT_ORIGINS, (user_id, ))
+            response['total'] = execute_to_scalar(conn, COUNT_PAYMENT_ORIGINS, (user_id, ))
 
             conn.close()
             return response, 200
