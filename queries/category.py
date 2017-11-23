@@ -17,7 +17,9 @@ FROM
     "category"
 WHERE 
   user_id = %s
-  AND is_active IS true;
+  AND is_active IS true
+ORDER BY
+    id ASC;
 """
 
 SELECT_CATEGORY = """
@@ -29,7 +31,9 @@ FROM
   "category"
 WHERE
   id = %s
-  AND is_active IS true;
+  AND is_active IS true
+ORDER BY
+    id ASC;
 """
 
 
